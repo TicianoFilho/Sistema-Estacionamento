@@ -11,11 +11,15 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tbl_valor")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Valor {
 
 	@Id

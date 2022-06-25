@@ -9,11 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tbl_movimentacao")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movimentacao {
 
 	@Id
