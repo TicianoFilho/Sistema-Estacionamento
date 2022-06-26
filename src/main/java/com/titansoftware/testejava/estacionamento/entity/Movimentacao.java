@@ -29,12 +29,12 @@ public class Movimentacao {
 	private String modelo;
 	
 	@Column(name = "data_entrada")
-	private LocalDateTime dataEntrada;
+	private LocalDateTime dataEntrada = LocalDateTime.now();
 	
 	@Column(name = "data_saida")
 	private LocalDateTime dataSaida;
 	
-	private double tempo;
+	private int tempo;
 	
 	@Column(name = "valor_pago")
 	private double valorPago;

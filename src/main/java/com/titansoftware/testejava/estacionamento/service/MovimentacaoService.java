@@ -15,4 +15,8 @@ public interface MovimentacaoService {
 	//Veículos que já saíram
 	public List<Movimentacao> findByDataSaidaIsNotNull();
 	
+	public List<Movimentacao> findAll();
+	
+	public Movimentacao findById(int veiculoId);
+	
 }

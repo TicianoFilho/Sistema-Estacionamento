@@ -1,6 +1,7 @@
 package com.titansoftware.testejava.estacionamento.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,18 @@ public class MovimentacaoSerivceImpl implements MovimentacaoService {
 	public List<Movimentacao> findByDataSaidaIsNotNull() {
 		return movimentacaoRepository.findByDataSaidaIsNotNull();
 	}
+
+	@Override
+	public List<Movimentacao> findAll() {
+		return movimentacaoRepository.findAll();
+	}
+
+	@Override
+	public Movimentacao findById(int veiculoId) {
+		Optional<Movimentacao> movOptional = movimentacaoRepository.findById(veiculoId);
+		return movOptional.isPresent() ? movOptional.get() : null;
+	}
+
+	
 
 }

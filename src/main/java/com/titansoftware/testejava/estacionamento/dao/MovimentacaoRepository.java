@@ -15,5 +15,8 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Inte
 	
 	//Veículos que já saíram
 	public List<Movimentacao> findByDataSaidaIsNotNull();
+	
+	//Todos os veículos
+	public List<Movimentacao> findAll();
 
 }

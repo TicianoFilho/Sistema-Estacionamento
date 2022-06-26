@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saída de Veículo</title>
+
+    <link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+	crossorigin="anonymous" />
+</head>
+<body>
+    
+    <div>
+		<nav class="navbar bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">Controle de Estacionamento</a>
+			</div>
+		</nav>
+	</div>
+	
+	<div class="container mt-5">
+
+		<div class="card shadow p-3 mb-5 bg-white rounded mt-3">
+			<div class="card-header fs-5">Saída de Veículo</div>
+			<div class="card-body">
+				
+				<p>Placa: <span th:text="${movimentacao.placa}"></span></p>
+				<p>Modelo: <span th:text="${movimentacao.modelo}"></span></p>
+				<p>Data de Entrada: <span th:text="${movimentacao.dataEntrada}"></span></p>
+
+				<hr/>
+
+				<form class="mb-3" action="#" th:action="@{/movimentacao/efetuar-saida}" th:object="${movimentacao}" th:method="POST">
+					<input type="hidden" name="hiddenId" th:field="*{id}">
+					<input type="hidden" name="hiddenPlaca" th:field="*{placa}">
+					<input type="hidden" name="hiddenModelo" th:field="*{modelo}">
+					<input type="hidden" name="hiddenDataEntrada" th:field="*{dataEntrada}">
+					
+					<div class="col-md-3">
+						<label for="inputDataSaida" class="form-label">Data de Saída</label> <input
+							type="text" class="form-control" id="inputDataSaida" readOnly th:field="*{dataSaida}">
+					</div>
+					<div class="row w-50 p-3 px-0">
+						<div class="col">
+							<label for="inputTempo" class="form-label">Tempo de
+								Estadia</label> <input type="text" class="form-control"
+								id="inputTempo" readOnly th:field="*{tempo}">
+						</div>
+
+						<div class="col">
+							<label for="inputValor" class="form-label">Valor
+							</label> <input type="text" class="form-control"
+								id="inputValor" readOnly th:field="*{valorPago}">
+						</div>
+					</div>
+					<div class="col-12 mt-3">
+						<button type="submit" class="btn btn-danger">Confirmar Saída</button>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+		
+		<div class="d-flex justify-content-end">
+			<a th:href="@{/movimentacao/list}">
+				<button type="button" class="btn btn-secondary">Voltar para Lista</button>
+			</a>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
