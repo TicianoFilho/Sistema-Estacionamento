@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,9 @@ public class Usuario {
 	
 	private String nome;
 	
+	@NotBlank(message = "Campo obrigatório")
 	private String usuario;
 	
+	@NotBlank(message = "Campo obrigatório")
 	private String senha;
 }

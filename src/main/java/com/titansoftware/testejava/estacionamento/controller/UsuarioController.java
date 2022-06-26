@@ -1,8 +1,11 @@
 package com.titansoftware.testejava.estacionamento.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,25 +27,21 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/autenticarUser")
-	public String autenticarUsuario(@ModelAttribute("user") Usuario usuario) {
+	public String autenticarUsuario(@Valid @ModelAttribute("user") Usuario usuario, BindingResult result) {
 
+		if (result.hasErrors()) {
+			return "login";
+		}
+		
 		Usuario dbUser = usuarioService.findByUsuarioAndSenha(usuario.getUsuario(), usuario.getSenha());
 		
 		if (dbUser != null) {
-			if (camposPreenchidos(usuario.getUsuario(), usuario.getSenha())) {
-				if (usuario.getUsuario().equals(dbUser.getUsuario()) && usuario.getSenha().equals(dbUser.getSenha())) {
-					return "redirect:/movimentacao/list";
-				}
+			if (usuario.getUsuario().equals(dbUser.getUsuario()) && usuario.getSenha().equals(dbUser.getSenha())) {
+				return "redirect:/movimentacao/list";
 			}
 		}
 		
 		return "login";
 	}
 	
-	private boolean camposPreenchidos(String usuario, String senha) {
-		if (usuario.isBlank() || usuario.isEmpty() || senha.isBlank() || senha.isEmpty()) {
-			return false;
-		}
-		return true;
-	}
 }
