@@ -1,13 +1,14 @@
 package com.titansoftware.testejava.estacionamento.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +47,17 @@ public class MovimentacaoController {
 	
 	//Salva a entrada de um veículo
 	@PostMapping("/save")
-	public String save(@ModelAttribute("movimentacao") Movimentacao movimentacao) {
-		movimentacaoService.save(movimentacao);
+	public String save(@Valid @ModelAttribute("movimentacao") Movimentacao movimentacao, BindingResult result) {
+		
+		if (result.hasErrors()) {
+			return "entrada-form";
+		}
+		
+		try {
+			movimentacaoService.save(movimentacao);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "entrada-form";
 	}
 	
@@ -63,12 +73,22 @@ public class MovimentacaoController {
 	public String saidaShowform(@RequestParam("veiculoId") int veiculoId, Model model) {
 		
 		Movimentacao movimentacao = movimentacaoService.findById(veiculoId);
-		Valor valor = valorService.findById(1);
+		try {
+			
+			//Se ainda não foi dada a saída do veículo.
+			if (movimentacao.getValorPago() <= 0 ) {
+				
+				Valor valor = valorService.findById(1);
 
-		// Define valores automaticamente para a saída do veículo
-		movimentacao.setDataSaida(LocalDateTime.now());
-		movimentacao.setTempo(getTempoTotalEstadia(movimentacao));
-		movimentacao.setValorPago(definirValor(movimentacao, valor));
+				// Define valores automaticamente para a saída do veículo
+				movimentacao.setDataSaida(LocalDateTime.now());
+				movimentacao.setTempo(getTempoTotalEstadia(movimentacao));
+				movimentacao.setValorPago(definirValor(movimentacao, valor));  //Tem que chamar o setTempo() antes de chamar o setValorPago()
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		model.addAttribute("movimentacao", movimentacao);
 		
@@ -95,23 +115,28 @@ public class MovimentacaoController {
 	public String getAllSairam(Model model) {
 		List<Movimentacao> movimentacoes = movimentacaoService.findByDataSaidaIsNotNull();
 		model.addAttribute("movimentacoes", movimentacoes);
-		model.addAttribute("pesquisaLabel", "(Saíram)");
+		model.addAttribute("pesquisaLabel", "(Saíram)");	
 		return "index";
 	}
 	
 	private int getTempoTotalEstadia(Movimentacao mov) {
-
+		
+		//Identifica quantos dias o veículo ficou estacionado
+		int dias = (mov.getDataSaida().getDayOfMonth() - mov.getDataEntrada().getDayOfMonth());
+		
 		int horaEntrada = mov.getDataEntrada().getHour();
-		int horaSaida = mov.getDataSaida().getHour();
+		int horaSaida = (mov.getDataSaida().getHour() + (dias * 24));
 		int horasTotais = (horaSaida - horaEntrada);
 		
 		return (horasTotais == 0) ? 1 : horasTotais;
 	}
 	
-	private double definirValor(Movimentacao mov, Valor valor) {
+	private double definirValor(Movimentacao mov, Valor valor) {	
+		
+		//O campo movimentacao.tempo (mov.getTempo) tem que já estar preenchido previamente.
 		
 		double valorPrimeiraHora = valor.getValorPrimeiraHora();
-		double valorAdicional = ( (mov.getTempo() - 1) * valor.getValorDemaisHoras() );
+		double valorAdicional = ( (mov.getTempo() - 1) * valor.getValorDemaisHoras() ) ;
 	
 		return valorPrimeiraHora + valorAdicional;
 	

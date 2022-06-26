@@ -71,12 +71,13 @@
 							<td th:text="${movimentacao.tempo}">
 							<td th:text="${movimentacao.valorPago}">
 							<td>
-								<a th:href="@{/movimentacao/saida-form(veiculoId=${movimentacao.id})}">
-									<button type="button" class="btn btn-danger">Saída</button>				
-								</a>
-								<a th:href="@{/movimentacao/veiculo(veiculoId=${movimentacao.id})}">
-									<button type="button" class="btn btn-warning">Editar</button>
-								</a>
+							
+							<a th:href="@{/movimentacao/saida-form(veiculoId=${movimentacao.id})}">
+								<button type="button" class="btn btn-danger">Saída </button>
+							</a> 
+							<a th:href="@{/movimentacao/veiculo(veiculoId=${movimentacao.id})}">
+								<button type="button" class="btn btn-warning">Editar</button>
+							</a>
 							</td>
 						</tr>
 					</tbody>

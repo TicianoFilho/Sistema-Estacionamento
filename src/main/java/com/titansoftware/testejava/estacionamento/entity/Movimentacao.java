@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +26,11 @@ public class Movimentacao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@NotBlank(message = "Campo obrigatório")
+	@Pattern(regexp = "[a-zA-Z]{3}[0-9][a-zA-Z0-9][0-9]{2}", message = "Placa no formato inválido")
 	private String placa;
 	
+	@NotBlank(message = "Campo obrigatório")
 	private String modelo;
 	
 	@Column(name = "data_entrada")
