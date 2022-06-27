@@ -1,6 +1,6 @@
 # Projeto de Controle de Estacionamento
 
-## Tecnologias usadas: Java, Spring Boot, Spring Data JPA, ThymeLeaf, MySql
+## Tecnologias usadas: Java, Spring Boot, Spring Data JPA, ThymeLeaf, Bootstrap, MySql.
 
 ### O projeto consiste em fazer o controle simples de estacionamento. Registrando entrada e saída dos veículos, calculando o tempo de permanência e realizando as regras de negócio. O sistema também lista os veículos que estão estacionados e os que já saíram.
 
